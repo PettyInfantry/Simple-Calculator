@@ -1,0 +1,143 @@
+Full SDLC Explanation
+
+
+ 1. Requirements Phase
+Goal: Define what the software should do.
+
+Functional Requirements
+- Accept two numeric inputs (`num1` and `num2`) from the user
+- Accept an operation symbol (`operation`) from the set: `+`, `-`, `*`, `/.`
+- Allow user to quit at any prompt by entering `q.`
+- Perform the selected arithmetic operation using functions: `add`, `subtract`, `multiply`, `divide.`
+- Display result in format: `num1 operation num2 = result`
+- Ask whether to continue (`y/n`) after each calculation
+- Handle multiple calculations in one session (loop until user quits)
+
+Non-Functional Requirements
+- Console/terminal interface only
+- Clear, readable prompts and output
+- Graceful error messages (no stack traces shown to the user)
+- Immediate exit on `q` input
+- No external dependencies
+
+Constraints
+- Only basic arithmetic (no exponents, roots, memory, etc. in v1.0)
+
+ 2. Design Phase
+High-level design
+- Single-file script (`calculator.py`)
+- One main control loop inside `main().`
+- Four pure functions for calculations: `add`, `subtract`, `multiply`, `divide.`
+- All user interaction and flow control happens in `main(.)`
+- Use `try-except` blocks to handle input errors
+
+Low-level design (key decisions matching implementation)
+- Inputs are read as strings → stripped → checked for `'q'` → converted to `float`
+- `operation` is read as a string and compared exactly with `'+'`, `'-'`, `'*'`, `'/.'`
+- `divide(num1, num2)` explicitly checks `num2 == 0` and raises `ZeroDivisionError`
+- Result is always printed with f-string formatting: `{num1} {operation} {num2} = {result}`
+- Separator line (`---------`) improves readability between calculations
+- Loop continues only if user enters `'y'` (case-insensitive)
+
+Data types
+- `num1`, `num2`: `float`
+- `operation`: `str`
+- All functions return `float` (or raise an exception)
+
+3. Implementation Phase
+The code has already been provided to you. Key implementation choices that match the design:
+
+- Functions named exactly: `add`, `subtract`, `multiply`, `divide.`
+- Parameters consistently named `num1`, `num2`
+- Main loop uses `while True` with `break` conditions
+- `strip()` used on all inputs to remove accidental spaces
+- `lower()` used for `'y'`, `'q'` checks → case-insensitive
+- Descriptive welcome message and instructions about `q.`
+- Clear separation of calculation logic from I/O
+
+4. Testing Phase
+Types of testing performed/recommended
+
+- Manual/exploratory testing
+  - Normal cases: 5 + 3, 10 * 4.5, 100 / 20 → correct results
+  - Zero division: 50 / 0 → correct error message
+  - Invalid number: “abc” → “Error: Please enter valid numbers!”
+  - Invalid operation: “%” → “Invalid operation!” message
+  - Quit at different points: `q` as first number, second number, or operation → exits cleanly
+
+- Edge cases
+  - Negative numbers: -8 * -2 → 16.0
+  - Decimals: 1.5 + 2.7 → 4.2
+  - Very large/small numbers (within float range)
+  - Empty input (just Enter) → ValueError caught
+  - Extra spaces: "  42  " → correctly parsed as 42.0
+
+- Usability testing
+  - Is the flow intuitive?
+  - Are messages clear?
+  - Does `q` work consistently?
+
+(No automated unit tests in v1.0 — can be added later with `unit-test` or `pytest`)
+
+ 5. Deployment Phase
+Deployment method: Single-file Python script
+
+Steps for end-user
+1. Have Python 3 installed
+2. Download or clone `calculator.py.`
+3. Open terminal → navigate to folder
+4. Run: `python calculator.py` (or `python3 calculator.py` on some systems)
+
+Distribution options
+- GitHub repository (with the README)
+- PyPI package (future – would need `setup.py`)
+- One-file executable via PyInstaller (optional)
+
+Environment: Any OS that runs Python 3 (Windows, macOS, Linux)
+
+6. Maintenance Phase
+Planned / possible activities
+
+- Bug fixes
+  - Improve handling of very long decimal results
+  - Better handling of keyboard interrupts (Ctrl+C)
+
+Enhancements (possible future versions)
+  - Add more operations: `%`, `*`, square root
+  - Result history/memory
+  - Command history (using `readline` or arrows)
+  - Colored output (with `colorama`)
+  - Unit tests
+  - Configurable precision
+
+ Versioning
+  - Use semantic versioning (e.g., v1.0.0 → v1.1.0 for features)
+  - Keep changelog in README or separate CHANGELOG.md
+
+Monitoring
+  - Watch GitHub issues/stars/forks
+  - Respond to user feedback
+
+
+Code Structure
+
+Main components:
+add(num1, num2) → returns sum
+subtract(num1, num2) → returns difference
+multiply(num1, num2) → returns product
+divide(num1, num2) → returns quotient (raises error if divisor is zero)
+main() → handles the entire user interaction loop
+All arithmetic functions take two float parameters (num1, num2).
+
+Error Handling
+ValueError → caught when user enters non-numeric input
+ZeroDivisionError → explicitly raised and caught in divide()
+Generic Exception → fallback catch for unexpected issues
+
+Contributing
+
+Feel free to fork and submit pull requests for:
+Additional operations (%, **, sqrt, etc.)
+Memory/history feature
+Better formatting or colors (using colorama, etc.)
+Unit tests
